@@ -739,6 +739,47 @@ export default function AsciiConverter() {
     document.body.removeChild(element)
   }
 
+  const downloadJpeg = () => {
+    if (!outputCanvasRef.current) {
+      setError("No canvas available for JPEG export")
+      return
+    }
+
+    try {
+      // Create a temporary canvas with white background
+      const tempCanvas = document.createElement('canvas')
+      const tempCtx = tempCanvas.getContext('2d')
+      if (!tempCtx) {
+        throw new Error("Could not get canvas context")
+      }
+
+      // Set dimensions to match the output canvas
+      tempCanvas.width = outputCanvasRef.current.width
+      tempCanvas.height = outputCanvasRef.current.height
+
+      // Fill with white background
+      tempCtx.fillStyle = 'white'
+      tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height)
+
+      // Draw the ASCII art on top
+      tempCtx.drawImage(outputCanvasRef.current, 0, 0)
+
+      // Convert to JPEG
+      const jpegData = tempCanvas.toDataURL('image/jpeg', 0.95)
+      
+      // Create download link
+      const element = document.createElement("a")
+      element.href = jpegData
+      element.download = "ascii-art.jpg"
+      document.body.appendChild(element)
+      element.click()
+      document.body.removeChild(element)
+    } catch (err) {
+      console.error("Error exporting JPEG:", err)
+      setError(err instanceof Error ? err.message : "Failed to export JPEG")
+    }
+  }
+
   const downloadSvg = () => {
     if ((!asciiArt && coloredAsciiArt.length === 0) || (grayscale && !asciiArt) || (!grayscale && coloredAsciiArt.length === 0)) {
       setError("No ASCII art to download as SVG.");
@@ -1427,6 +1468,15 @@ export default function AsciiConverter() {
                   disabled={loading || !imageLoaded || !asciiArt}
                 >
                   <Download className="h-4 w-4 mr-1 md:mr-2" /> {sidebarNarrow ? "TXT" : "TXT"}
+                </Button>
+
+                <Button
+                  onClick={downloadJpeg}
+                  className="bg-stone-700 hover:bg-stone-600 text-stone-200 border-stone-600"
+                  title="Download as JPEG"
+                  disabled={loading || !imageLoaded || !outputCanvasRef.current}
+                >
+                  <Download className="h-4 w-4 mr-1 md:mr-2" /> {sidebarNarrow ? "JPG" : "JPG"}
                 </Button>
 
                 <Button

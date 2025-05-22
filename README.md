@@ -14,7 +14,11 @@ A modern web application that converts images to ASCII art with plotter support.
   - SVG export for plotter compatibility
 - Interactive preview with zoom controls
 - Drag-and-drop image upload
-- Multiple export options (TXT, SVG)
+- Multiple export options:
+  - Copy to clipboard
+  - Download as TXT
+  - Download as JPEG
+  - Download as SVG (single or dual-path for plotters)
 
 ## Getting Started
 
@@ -61,6 +65,7 @@ pnpm dev
 4. Export in your preferred format:
    - Copy to clipboard
    - Download as TXT
+   - Download as JPEG
    - Download as SVG (single or dual-path for plotters)
 
 ## License
