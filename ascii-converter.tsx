@@ -240,7 +240,7 @@ export default function AsciiConverter() {
 
     // Set the source after setting up event handlers
     img.src =
-      "/images/original-image.jpg"
+      "/images/original-image.png"
   }
 
   const loadImage = (src: string) => {
@@ -746,7 +746,7 @@ export default function AsciiConverter() {
     }
 
     try {
-      // Create a temporary canvas with white background
+      // Create a temporary canvas with black background
       const tempCanvas = document.createElement('canvas')
       const tempCtx = tempCanvas.getContext('2d')
       if (!tempCtx) {
@@ -757,15 +757,15 @@ export default function AsciiConverter() {
       tempCanvas.width = outputCanvasRef.current.width
       tempCanvas.height = outputCanvasRef.current.height
 
-      // Fill with white background
-      tempCtx.fillStyle = 'white'
+      // Fill with black background
+      tempCtx.fillStyle = 'black'
       tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height)
 
       // Draw the ASCII art on top
       tempCtx.drawImage(outputCanvasRef.current, 0, 0)
 
-      // Convert to JPEG
-      const jpegData = tempCanvas.toDataURL('image/jpeg', 0.95)
+      // Convert to JPEG with high quality
+      const jpegData = tempCanvas.toDataURL('image/jpeg', 1.0)
       
       // Create download link
       const element = document.createElement("a")
